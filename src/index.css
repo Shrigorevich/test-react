@@ -14,10 +14,25 @@ code {
 
 .wrapper{
   display: flex;
+  justify-content: center;
 }
 .form{
   display: flex;
   flex-direction: column;
+  padding: 15px;
+}
+.table{
+  padding: 15px;
+}
+table{
+  border-collapse: collapse;
+}
+th{
+  cursor: pointer;
+  padding: 8px;
+}
+td{
+  padding: 8px;
 }
 .formElement{
   margin: 0 0 15px 0;
