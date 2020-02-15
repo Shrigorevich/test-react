@@ -21,14 +21,12 @@ const Wrapper = () => {
       lastName: "",
       phone: "",
       gender: true,
-      age: 0,
+      age: 0
     }
   ));
 
 
   useEffect(() => {
-    console.log(users.arr);
-    
     localStorage.setItem("users", JSON.stringify(users.arr));
   }, [users]);
 
@@ -55,7 +53,7 @@ const Wrapper = () => {
       setError(() => ({
         ...error, phone: true, lastName: false, message: 'Incorrect phone!'
       }));
-    } else if (users.arr.filter(item => (item.phone == form.phone)).length != 0) {
+    } else if (users.arr.filter(item => (item.phone === form.phone)).length !== 0) {
       setError(() => ({
         ...error, phone: true, message: 'This phone is already registered!'
       }));
@@ -82,6 +80,7 @@ const Wrapper = () => {
         gender: true,
         age: 0
       });
+      document.getElementById('form').reset()
     }
   };
 
@@ -97,12 +96,10 @@ const Wrapper = () => {
   };
 
   const deleteUser = (userPhone) => {
-    console.log(userPhone);
-    
     setUser({
       arr: [
         ...users.arr.filter((item, i) => (
-          item.phone != userPhone
+          item.phone !== userPhone
         ))
       ]
     })
@@ -111,6 +108,7 @@ const Wrapper = () => {
   return (
     <div className="wrapper row">
       <div className="form col-5 p-4">
+        <form id='form'>
         <div className="form-group px-5">
           <div className="formElement mb-3">
             <input
@@ -140,7 +138,7 @@ const Wrapper = () => {
               value={form.phone}
               type="text"
               name="phone"
-              placeholder="Phone: ххх-ххх-хх-хх"
+              placeholder="Phone: 10 digits"
               className={error.phone ? "form-control invalid" : "form-control"}
               onChange={changeHandler}
             />
@@ -186,6 +184,7 @@ const Wrapper = () => {
           </div>  
           <span className="error">{error.message}</span>        
         </div>
+        </form>
 
       </div>
       <Table
