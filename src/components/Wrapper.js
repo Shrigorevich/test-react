@@ -16,16 +16,13 @@ const Wrapper = () => {
       phone: "",
       gender: true,
       age: 0,
-      id: users.arr.length
     }
   ));
 
   useEffect(() => {
     console.log(users.arr);
     
-    if (users.arr.length !== 0) {
-      localStorage.setItem("users", JSON.stringify(users.arr));
-    }
+    localStorage.setItem("users", JSON.stringify(users.arr));
   }, [users]);
 
   const changeHandler = event => {
@@ -73,8 +70,16 @@ const Wrapper = () => {
     });
   };
 
-  const deleteUser = () => {
+  const deleteUser = (userPhone) => {
+    console.log(userPhone);
     
+    setUser({
+      arr: [
+        ...users.arr.filter((item, i) => (
+          item.phone != userPhone
+        ))
+      ]
+    })
   }  
 
   return (
@@ -151,6 +156,7 @@ const Wrapper = () => {
       <Table
         users={users.arr.length === 0 ? null : users.arr}
         sorting={sorting}
+        deleteUser={deleteUser}
       />
     </div>
   );

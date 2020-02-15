@@ -16,7 +16,7 @@ const Table = props => {
         </thead>
         <tbody>
           {props.users
-            ? props.users.map((user, i) => <TableRow user={user} key={i} />)
+            ? props.users.map((user, i) => (<TableRow user={user} key={i} deleteUser={props.deleteUser}/>))
             : null}
         </tbody>
       </table>
