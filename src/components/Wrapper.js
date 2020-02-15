@@ -3,8 +3,13 @@ import React, { useState, useEffect } from "react";
 import Table from "../components/Table";
 
 const Wrapper = () => {
-  const [error, setError] = useState(null);
-
+  const [error, setError] = useState({
+      firstName: false,
+      lastName: false,
+      phone: false,
+      gender: false,
+      age: false
+  });
   const [users, setUser] = useState({
     arr: JSON.parse(localStorage.getItem("users")) || []
   });
@@ -18,6 +23,7 @@ const Wrapper = () => {
       age: 0,
     }
   ));
+
 
   useEffect(() => {
     console.log(users.arr);
@@ -37,18 +43,36 @@ const Wrapper = () => {
 
   const validation = () => {
     if (form.firstName.length === 0) {
-      setError("Enter your first name");
+      setError(() => ({
+        ...error, firstName: true
+      }));
     } else if (form.lastName.length === 0) {
-      setError("Enter your last name");
+      setError(() => ({
+        ...error, lastName: true, firstName: false
+      }));
     } else if (form.phone.length !== 10 || /\D/.test(form.phone)) {
-      setError("Invalid number");
+      setError(() => ({
+        ...error, phone: true, lastName: false
+      }));
+    } else if (users.arr.filter(item => (item.phone == form.phone)).length != 0) {
+      setError(() => ({
+        ...error, phone: true
+      }));
     } else if (form.age < 18) {
-      setError("You are under 18 years old");
+      setError(() => ({
+        ...error, age: true, phone: false
+      }));
     } else {
       setUser(users => ({
         arr: [...users.arr, { ...form }]
       }));
-      setError(null);
+      setError({
+        firstName: false,
+        lastName: false,
+        phone: false,
+        gender: false,
+        age: false
+      });
       setForm({
         firstName: "",
         lastName: "",
@@ -83,75 +107,84 @@ const Wrapper = () => {
   }  
 
   return (
-    <div className="wrapper">
-      <div className="form">
-        <div className="formElement">
-          <input
-            value={form.firstName}
-            type="text"
-            name="firstName"
-            placeholder=""
-            className=""
-            onChange={changeHandler}
-          />
+    <div className="wrapper row">
+      <div className="form col-5 p-4">
+        <div className="form-group px-5">
+          <div className="formElement mb-3">
+            <input
+              value={form.firstName}
+              type="text"
+              name="firstName"
+              placeholder="First name"
+              className={error.firstName ? "form-control invalid" : "form-control"}
+              onChange={changeHandler}
+            />
+          </div>
+
+          <div className="formElement mb-3">
+            <input
+              value={form.lastName}
+              type="text"
+              name="lastName"
+              placeholder="Last name"
+              className={error.lastName ? "form-control invalid" : "form-control"}
+              onChange={changeHandler}
+            />
+          </div>
+
+
+          <div className="formElement mb-3">
+            <input
+              value={form.phone}
+              type="text"
+              name="phone"
+              placeholder="Phone"
+              className={error.phone ? "form-control invalid" : "form-control"}
+              onChange={changeHandler}
+            />
+          </div>
+
+          <div className="formElement mb-3">
+            <input
+              value={form.age}
+              type="number"
+              name="age"
+              placeholder="Age"
+              className={error.age ? "form-control invalid" : "form-control"}
+              onChange={changeHandler}
+            />
+          </div>
+          <div className="form-row m-0 p-0 justify-content-between">
+            <div className="formElement mb-3">
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="gender"
+                  id="male"
+                  value="true"
+                  onClick={changeHandler}
+                />
+                <label className="form-check-label" htmlFor="male">male</label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="gender"
+                  id="female"
+                  value="false"
+                  onClick={changeHandler}
+                />
+                <label className="form-check-label" htmlFor="female">female</label>
+              </div>
+            </div>
+            <div className="formElement">
+              <button onClick={validation} type="button" className="btn btn-secondary">Add user</button>
+            </div>
+          </div>          
         </div>
 
-        <div className="formElement">
-          <input
-            value={form.lastName}
-            type="text"
-            name="lastName"
-            placeholder=""
-            className=""
-            onChange={changeHandler}
-          />
-        </div>
-
-        <div className="formElement">
-          <input
-            value={form.phone}
-            type="text"
-            name="phone"
-            placeholder=""
-            className=""
-            onChange={changeHandler}
-          />
-        </div>
-
-        <div className="formElement">
-          <input
-            value={form.age}
-            type="number"
-            name="age"
-            placeholder=""
-            className=""
-            onChange={changeHandler}
-          />
-        </div>
-
-        <div className="formElement">
-          <input
-            type="radio"
-            name="gender"
-            id="male"
-            value="true"
-            onChange={changeHandler}
-          />
-          <label htmlFor="male">male</label>
-
-          <input
-            type="radio"
-            name="gender"
-            id="female"
-            value="false"
-            onClick={changeHandler}
-          />
-          <label htmlFor="female">female</label>
-        </div>
-        {error ? <span>{error}</span> : null}
-        <div className="formElement">
-          <button onClick={validation}>Add User</button>
-        </div>
       </div>
       <Table
         users={users.arr.length === 0 ? null : users.arr}

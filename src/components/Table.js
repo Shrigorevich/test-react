@@ -3,8 +3,8 @@ import TableRow from "./TableRow";
 
 const Table = props => {
   return (
-    <div className="table">
-      <table border="1">
+    <div className="col-md-7 p-4">
+      <table>
         <thead>
           <tr>
             <th data-value="firstName" onClick={props.sorting}>First name</th>
