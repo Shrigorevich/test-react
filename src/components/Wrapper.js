@@ -8,7 +8,8 @@ const Wrapper = () => {
       lastName: false,
       phone: false,
       gender: false,
-      age: false
+      age: false,
+      message: ''
   });
   const [users, setUser] = useState({
     arr: JSON.parse(localStorage.getItem("users")) || []
@@ -44,23 +45,23 @@ const Wrapper = () => {
   const validation = () => {
     if (form.firstName.length === 0) {
       setError(() => ({
-        ...error, firstName: true
+        ...error, firstName: true, message: 'Enter your first name!'
       }));
     } else if (form.lastName.length === 0) {
       setError(() => ({
-        ...error, lastName: true, firstName: false
+        ...error, lastName: true, firstName: false, message: 'Enter your last name!'
       }));
     } else if (form.phone.length !== 10 || /\D/.test(form.phone)) {
       setError(() => ({
-        ...error, phone: true, lastName: false
+        ...error, phone: true, lastName: false, message: 'Incorrect phone!'
       }));
     } else if (users.arr.filter(item => (item.phone == form.phone)).length != 0) {
       setError(() => ({
-        ...error, phone: true
+        ...error, phone: true, message: 'This phone is already registered!'
       }));
     } else if (form.age < 18) {
       setError(() => ({
-        ...error, age: true, phone: false
+        ...error, age: true, phone: false, message: 'You are under 18 years old!'
       }));
     } else {
       setUser(users => ({
@@ -71,7 +72,8 @@ const Wrapper = () => {
         lastName: false,
         phone: false,
         gender: false,
-        age: false
+        age: false,
+        message: ''
       });
       setForm({
         firstName: "",
@@ -138,7 +140,7 @@ const Wrapper = () => {
               value={form.phone}
               type="text"
               name="phone"
-              placeholder="Phone"
+              placeholder="Phone: ххх-ххх-хх-хх"
               className={error.phone ? "form-control invalid" : "form-control"}
               onChange={changeHandler}
             />
@@ -146,7 +148,6 @@ const Wrapper = () => {
 
           <div className="formElement mb-3">
             <input
-              value={form.age}
               type="number"
               name="age"
               placeholder="Age"
@@ -182,7 +183,8 @@ const Wrapper = () => {
             <div className="formElement">
               <button onClick={validation} type="button" className="btn btn-secondary">Add user</button>
             </div>
-          </div>          
+          </div>  
+          <span className="error">{error.message}</span>        
         </div>
 
       </div>

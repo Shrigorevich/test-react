@@ -45,6 +45,10 @@ tr:hover td .del{
   background: red;
   left: 0px;
 }
+th:hover{
+  background-color: #434343;
+  color: #fff;
+}
 i{
   margin-top: 2px;
 }
