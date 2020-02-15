@@ -45,6 +45,9 @@ tr:hover td .del{
   background: red;
   left: 0px;
 }
+i{
+  margin-top: 2px;
+}
 .del{
   position: absolute;
   width: 20px;
