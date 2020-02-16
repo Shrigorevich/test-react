@@ -89,7 +89,11 @@ const Wrapper = () => {
     setUser({
       arr: [
         ...users.arr.sort((a, b) => {
-          return a[key] > b[key] ? 1 : -1;
+          let aKey = a[key].toLowerCase()
+          let bKey = b[key].toLowerCase()
+          if(aKey > bKey) return 1
+          if(aKey < bKey) return -1
+          return 0
         })
       ]
     });
